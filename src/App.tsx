@@ -34,10 +34,16 @@ function AppContent() {
     setShowForm(true);
   };
 
-  const handleGenerate = (letter: string) => {
+  const handleGenerate = (letter: string, jobTitle?: string, companyName?: string) => {
     setCoverLetter(letter);
     setError('');
     setShowForm(false);
+    
+    // Save to history
+    if (jobTitle && companyName) {
+      const { saveToHistory } = require('@/utils/history');
+      saveToHistory({ coverLetter: letter, jobTitle, companyName });
+    }
   };
 
   const handleError = (errorMessage: string) => {
@@ -95,6 +101,40 @@ function AppContent() {
               <p className="text-slate-500 mt-6 text-sm">
                 ✓ One-time payment • ✓ Instant access • ✓ No subscription
               </p>
+
+              {/* Example Output Section */}
+              <div className="mt-16 max-w-4xl mx-auto">
+                <h3 className="text-2xl font-bold text-slate-900 mb-4 text-center">
+                  See the quality for yourself
+                </h3>
+                <p className="text-slate-600 text-center mb-8">
+                  Here's an example of what our AI generates
+                </p>
+                
+                <div className="bg-white rounded-xl shadow-lg border border-slate-200 p-8">
+                  <div className="text-sm text-slate-600 mb-4 font-medium">
+                    Example: Software Engineer at Google
+                  </div>
+                  <div className="prose prose-slate max-w-none text-slate-800 leading-relaxed whitespace-pre-line">
+{`Dear Hiring Manager,
+
+I am writing to express my strong interest in the Software Engineer position at Google. With five years of experience building scalable web applications and a proven track record of delivering high-impact features, I am excited about the opportunity to contribute to Google's mission of organizing the world's information.
+
+Throughout my career, I have specialized in full-stack development using React, Node.js, and cloud technologies. At my current role, I led the development of a real-time analytics platform that processes over 1 million events per day, improving data processing efficiency by 40%. This experience has given me deep expertise in system design, performance optimization, and building products that scale.
+
+What particularly excites me about Google is your commitment to innovation and technical excellence. I'm passionate about solving complex problems and creating elegant solutions that impact millions of users. Your work in AI, cloud computing, and developer tools aligns perfectly with my interests and expertise.
+
+I would welcome the opportunity to discuss how my skills in software engineering and passion for technology can contribute to Google's continued success. Thank you for considering my application.
+
+Sincerely,
+John Doe`}
+                  </div>
+                </div>
+
+                <p className="text-center mt-6 text-slate-600">
+                  <span className="font-semibold">This took 3 seconds to generate.</span> Imagine what it can do for your job application.
+                </p>
+              </div>
             </div>
           </div>
         )}

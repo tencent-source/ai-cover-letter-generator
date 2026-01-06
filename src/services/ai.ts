@@ -9,6 +9,7 @@ export interface CoverLetterRequest {
   experience: string;
   name: string;
   contactEmail: string;
+  tone?: 'professional' | 'creative' | 'bold';
 }
 
 export interface CoverLetterResponse {
@@ -21,11 +22,21 @@ export interface CoverLetterResponse {
   error?: string;
 }
 
-const SYSTEM_PROMPT = `You are a professional cover letter writer. 
+const getToneInstructions = (tone?: string) => {
+  const tones = {
+    professional: 'Use a formal, traditional, and highly professional tone. Employ proper business language and maintain a conservative structure.',
+    creative: 'Use an engaging, unique, and creative tone. Show personality and originality while remaining professional. Use compelling and memorable language.',
+    bold: 'Use a confident, assertive, and impactful tone. Be direct and show strong conviction. Emphasize achievements and capabilities with confidence.',
+  };
+  return tones[(tone as keyof typeof tones)] || tones.professional;
+};
+
+const getSystemPrompt = (tone?: string) => `You are a professional cover letter writer. 
 Generate a personalized, compelling cover letter based on the provided information.
 
+TONE: ${getToneInstructions(tone)}
+
 The letter should:
-- Be professional and engaging
 - Highlight relevant skills and experience matching the job description
 - Show genuine enthusiasm for the role and company
 - Be appropriately concise (300-400 words)
@@ -62,7 +73,7 @@ Contact Information:
   const payload = {
     model: AI_CONFIG.model,
     messages: [
-      { role: 'system', content: SYSTEM_PROMPT },
+      { role: 'system', content: getSystemPrompt(request.tone) },
       { role: 'user', content: userPrompt }
     ],
     temperature: AI_CONFIG.temperature,

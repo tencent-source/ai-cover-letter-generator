@@ -16,10 +16,11 @@ interface CoverLetterFormData {
   experience: string;
   name: string;
   contactEmail: string;
+  tone: 'professional' | 'creative' | 'bold';
 }
 
 interface CoverLetterFormProps {
-  onGenerate: (coverLetter: string) => void;
+  onGenerate: (coverLetter: string, jobTitle?: string, companyName?: string) => void;
   onError: (error: string) => void;
 }
 
@@ -33,6 +34,7 @@ export function CoverLetterForm({ onGenerate, onError }: CoverLetterFormProps) {
     experience: '',
     name: '',
     contactEmail: '',
+    tone: 'professional',
   });
   
   const [errors, setErrors] = useState<Partial<Record<keyof CoverLetterFormData, string>>>({});
@@ -114,7 +116,7 @@ export function CoverLetterForm({ onGenerate, onError }: CoverLetterFormProps) {
       } else if (result.coverLetter) {
         // Record successful request
         coverLetterRateLimiter.recordRequest();
-        onGenerate(result.coverLetter);
+        onGenerate(result.coverLetter, formData.jobTitle, formData.companyName);
       }
     } catch (err) {
       onError('An unexpected error occurred. Please try again.');
@@ -187,6 +189,33 @@ export function CoverLetterForm({ onGenerate, onError }: CoverLetterFormProps) {
             helperText="Separate multiple skills with commas"
             error={errors.skills}
           />
+
+          <div>
+            <label className="block text-sm font-semibold text-slate-900 mb-2">
+              Writing Tone
+            </label>
+            <div className="grid grid-cols-3 gap-3">
+              {[
+                { value: 'professional', label: 'Professional', desc: 'Formal and traditional' },
+                { value: 'creative', label: 'Creative', desc: 'Engaging and unique' },
+                { value: 'bold', label: 'Bold', desc: 'Confident and assertive' },
+              ].map((option) => (
+                <button
+                  key={option.value}
+                  type="button"
+                  onClick={() => setFormData((prev) => ({ ...prev, tone: option.value as any }))}
+                  className={`p-4 rounded-xl border-2 transition-all text-left ${
+                    formData.tone === option.value
+                      ? 'border-emerald-500 bg-emerald-50'
+                      : 'border-slate-200 hover:border-slate-300'
+                  }`}
+                >
+                  <div className="font-semibold text-slate-900">{option.label}</div>
+                  <div className="text-xs text-slate-600 mt-1">{option.desc}</div>
+                </button>
+              ))}
+            </div>
+          </div>
           
           <Textarea
             label="Your Experience"
