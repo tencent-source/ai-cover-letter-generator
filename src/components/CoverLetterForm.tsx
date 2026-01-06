@@ -1,0 +1,217 @@
+import React, { useState } from 'react';
+import { Send, Loader2 } from 'lucide-react';
+import { Button } from './ui/Button';
+import { Input, Textarea } from './ui/Input';
+import { Card, CardHeader, CardTitle, CardContent } from './ui/Card';
+import { generateCoverLetter } from '@/services/groq';
+import { GROQ_CONFIG } from '@/utils/constants';
+import { isValidEmail } from '@/utils/helpers';
+
+interface CoverLetterFormData {
+  jobTitle: string;
+  companyName: string;
+  jobDescription: string;
+  skills: string;
+  experience: string;
+  name: string;
+  contactEmail: string;
+}
+
+interface CoverLetterFormProps {
+  onGenerate: (coverLetter: string) => void;
+  onError: (error: string) => void;
+}
+
+export function CoverLetterForm({ onGenerate, onError }: CoverLetterFormProps) {
+  const [isLoading, setIsLoading] = useState(false);
+  const [formData, setFormData] = useState<CoverLetterFormData>({
+    jobTitle: '',
+    companyName: '',
+    jobDescription: '',
+    skills: '',
+    experience: '',
+    name: '',
+    contactEmail: '',
+  });
+  
+  const [errors, setErrors] = useState<Partial<Record<keyof CoverLetterFormData, string>>>({});
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    
+    if (errors[name as keyof CoverLetterFormData]) {
+      setErrors((prev) => ({ ...prev, [name]: undefined }));
+    }
+  };
+
+  const validateForm = (): boolean => {
+    const newErrors: Partial<Record<keyof CoverLetterFormData, string>> = {};
+    
+    if (!formData.jobTitle.trim()) {
+      newErrors.jobTitle = 'Job title is required';
+    }
+    if (!formData.companyName.trim()) {
+      newErrors.companyName = 'Company name is required';
+    }
+    if (!formData.jobDescription.trim()) {
+      newErrors.jobDescription = 'Job description is required';
+    }
+    if (!formData.skills.trim()) {
+      newErrors.skills = 'Skills are required';
+    }
+    if (!formData.experience.trim()) {
+      newErrors.experience = 'Experience is required';
+    }
+    if (!formData.name.trim()) {
+      newErrors.name = 'Your name is required';
+    }
+    if (!formData.contactEmail.trim()) {
+      newErrors.contactEmail = 'Email is required';
+    } else if (!isValidEmail(formData.contactEmail)) {
+      newErrors.contactEmail = 'Please enter a valid email';
+    }
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!validateForm()) {
+      return;
+    }
+    
+    setIsLoading(true);
+    
+    try {
+      const skillsArray = formData.skills.split(',').map((s) => s.trim()).filter(Boolean);
+      
+      const result = await generateCoverLetter(
+        {
+          ...formData,
+          skills: skillsArray,
+        },
+        undefined,
+        GROQ_CONFIG.apiKey || undefined
+      );
+      
+      if (result.error) {
+        onError(result.error);
+      } else if (result.coverLetter) {
+        onGenerate(result.coverLetter);
+      }
+    } catch (err) {
+      onError('An unexpected error occurred. Please try again.');
+      console.error('Generation error:', err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <Card hover>
+      <CardHeader>
+        <CardTitle>Generate Your Cover Letter</CardTitle>
+      </CardHeader>
+      
+      <CardContent>
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Input
+              label="Your Name"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              placeholder="John Doe"
+              error={errors.name}
+            />
+            
+            <Input
+              label="Contact Email"
+              name="contactEmail"
+              type="email"
+              value={formData.contactEmail}
+              onChange={handleChange}
+              placeholder="john@example.com"
+              error={errors.contactEmail}
+            />
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Input
+              label="Job Title"
+              name="jobTitle"
+              value={formData.jobTitle}
+              onChange={handleChange}
+              placeholder="Software Engineer"
+              error={errors.jobTitle}
+            />
+            
+            <Input
+              label="Company Name"
+              name="companyName"
+              value={formData.companyName}
+              onChange={handleChange}
+              placeholder="Google"
+              error={errors.companyName}
+            />
+          </div>
+          
+          <Input
+            label="Your Skills"
+            name="skills"
+            value={formData.skills}
+            onChange={handleChange}
+            placeholder="React, TypeScript, Node.js (comma-separated)"
+            helperText="Separate multiple skills with commas"
+            error={errors.skills}
+          />
+          
+          <Textarea
+            label="Your Experience"
+            name="experience"
+            value={formData.experience}
+            onChange={handleChange}
+            placeholder="Describe your relevant work experience, achievements, and qualifications..."
+            rows={3}
+            error={errors.experience}
+          />
+          
+          <Textarea
+            label="Job Description"
+            name="jobDescription"
+            value={formData.jobDescription}
+            onChange={handleChange}
+            placeholder="Paste the job description here to help tailor your cover letter..."
+            rows={5}
+            error={errors.jobDescription}
+          />
+          
+          <Button
+            type="submit"
+            className="w-full"
+            size="lg"
+            loading={isLoading}
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <>
+                <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                Generating...
+              </>
+            ) : (
+              <>
+                <Send className="w-5 h-5 mr-2" />
+                Generate Cover Letter
+              </>
+            )}
+          </Button>
+        </form>
+      </CardContent>
+    </Card>
+  );
+}
