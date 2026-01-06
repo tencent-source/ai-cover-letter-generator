@@ -46,7 +46,7 @@ export function CoverLetterDisplay({ coverLetter, onRegenerate }: CoverLetterDis
           <CardTitle>Your Cover Letter</CardTitle>
           <div className="flex gap-2">
             <Button
-              variant="outline"
+              variant="primary"
               size="sm"
               onClick={handleRegenerate}
               loading={isRegenerating}
@@ -54,7 +54,7 @@ export function CoverLetterDisplay({ coverLetter, onRegenerate }: CoverLetterDis
               <RefreshCw className="w-4 h-4 mr-1" />
               Regenerate
             </Button>
-            <Button variant="outline" size="sm" onClick={handleDownload}>
+            <Button variant="primary" size="sm" onClick={handleDownload}>
               <Download className="w-4 h-4 mr-1" />
               Download
             </Button>
