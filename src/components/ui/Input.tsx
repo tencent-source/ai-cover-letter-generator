@@ -17,27 +17,27 @@ export function Input({
   return (
     <div className="w-full">
       {label && (
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label className="block text-sm font-medium text-slate-300 mb-1">
           {label}
         </label>
       )}
       <input
         className={cn(
-          'w-full px-4 py-2 border rounded-lg transition-colors duration-200',
+          'w-full px-4 py-2 border rounded-lg transition-colors duration-200 bg-slate-800',
           'focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent',
-          'placeholder:text-gray-400',
+          'placeholder:text-slate-500 text-white',
           error
             ? 'border-red-500 focus:ring-red-500'
-            : 'border-gray-300 hover:border-gray-400',
+            : 'border-slate-600 hover:border-slate-500',
           className
         )}
         {...props}
       />
       {error && (
-        <p className="mt-1 text-sm text-red-500">{error}</p>
+        <p className="mt-1 text-sm text-red-400">{error}</p>
       )}
       {helperText && !error && (
-        <p className="mt-1 text-sm text-gray-500">{helperText}</p>
+        <p className="mt-1 text-sm text-slate-400">{helperText}</p>
       )}
     </div>
   );
@@ -59,27 +59,27 @@ export function Textarea({
   return (
     <div className="w-full">
       {label && (
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label className="block text-sm font-medium text-slate-300 mb-1">
           {label}
         </label>
       )}
       <textarea
         className={cn(
-          'w-full px-4 py-2 border rounded-lg transition-colors duration-200',
+          'w-full px-4 py-2 border rounded-lg transition-colors duration-200 bg-slate-800',
           'focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent',
-          'placeholder:text-gray-400 resize-none',
+          'placeholder:text-slate-500 resize-none text-white',
           error
             ? 'border-red-500 focus:ring-red-500'
-            : 'border-gray-300 hover:border-gray-400',
+            : 'border-slate-600 hover:border-slate-500',
           className
         )}
         {...props}
       />
       {error && (
-        <p className="mt-1 text-sm text-red-500">{error}</p>
+        <p className="mt-1 text-sm text-red-400">{error}</p>
       )}
       {helperText && !error && (
-        <p className="mt-1 text-sm text-gray-500">{helperText}</p>
+        <p className="mt-1 text-sm text-slate-400">{helperText}</p>
       )}
     </div>
   );

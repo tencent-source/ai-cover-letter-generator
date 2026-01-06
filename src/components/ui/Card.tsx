@@ -20,11 +20,11 @@ export function Card({
     md: 'p-6',
     lg: 'p-8',
   };
-  
+
   return (
     <div
       className={cn(
-        'bg-white rounded-xl shadow-md border border-gray-100',
+        'bg-slate-800 rounded-xl shadow-md border border-slate-700',
         paddingStyles[padding],
         hover && 'transition-all duration-300 hover:shadow-xl hover:-translate-y-1',
         className
@@ -57,7 +57,7 @@ export function CardTitle({
   className?: string;
 }) {
   return (
-    <h3 className={cn('text-xl font-semibold text-gray-900', className)}>
+    <h3 className={cn('text-xl font-semibold text-white', className)}>
       {children}
     </h3>
   );
