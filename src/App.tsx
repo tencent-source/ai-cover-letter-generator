@@ -65,8 +65,8 @@ function AppContent() {
       <Header />
 
       <main className="mx-auto px-4">
-        {/* Hero section - Grammarly inspired */}
-        {!isPaid && !showForm && !coverLetter && (
+        {/* Hero section - Grammarly inspired - TEMPORARILY DISABLED FOR TESTING */}
+        {false && !isPaid && !showForm && !coverLetter && (
           <div className="relative overflow-hidden">
             {/* Gradient background */}
             <div className="absolute inset-0 bg-gradient-to-br from-emerald-50 via-white to-blue-50 opacity-60"></div>
@@ -99,8 +99,8 @@ function AppContent() {
           </div>
         )}
 
-        {/* Show form if user has paid and no cover letter yet */}
-        {isPaid && showForm && !coverLetter && (
+        {/* Show form if user has paid and no cover letter yet - FREE FOR TESTING */}
+        {!coverLetter && (
           <div className="max-w-4xl mx-auto py-8">
             <CoverLetterForm
               onGenerate={handleGenerate}
