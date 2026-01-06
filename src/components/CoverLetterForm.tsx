@@ -6,6 +6,7 @@ import { Card, CardHeader, CardTitle, CardContent } from './ui/Card';
 import { generateCoverLetter } from '@/services/ai';
 import { AI_CONFIG } from '@/utils/constants';
 import { isValidEmail } from '@/utils/helpers';
+import { coverLetterRateLimiter } from '@/utils/rateLimit';
 
 interface CoverLetterFormData {
   jobTitle: string;
@@ -84,6 +85,15 @@ export function CoverLetterForm({ onGenerate, onError }: CoverLetterFormProps) {
     if (!validateForm()) {
       return;
     }
+
+    // Check rate limit
+    const rateLimitCheck = coverLetterRateLimiter.checkLimit();
+    if (!rateLimitCheck.allowed) {
+      onError(
+        `Rate limit exceeded. You can generate ${rateLimitCheck.resetIn} more cover letter${rateLimitCheck.resetIn === 1 ? '' : 's'} in ${rateLimitCheck.resetIn} minute${rateLimitCheck.resetIn === 1 ? '' : 's'}. Please try again later.`
+      );
+      return;
+    }
     
     setIsLoading(true);
     
@@ -102,6 +112,8 @@ export function CoverLetterForm({ onGenerate, onError }: CoverLetterFormProps) {
       if (result.error) {
         onError(result.error);
       } else if (result.coverLetter) {
+        // Record successful request
+        coverLetterRateLimiter.recordRequest();
         onGenerate(result.coverLetter);
       }
     } catch (err) {
@@ -119,6 +131,9 @@ export function CoverLetterForm({ onGenerate, onError }: CoverLetterFormProps) {
         <p className="text-lg text-slate-600">
           Fill in the details below and we'll generate a personalized cover letter in seconds
         </p>
+        <div className="mt-3 text-sm text-slate-500">
+          Remaining generations: {coverLetterRateLimiter.getRemainingRequests()} / 5 per hour
+        </div>
       </div>
       
       <form onSubmit={handleSubmit} className="space-y-6">
