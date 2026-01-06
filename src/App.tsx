@@ -16,18 +16,7 @@ function AppContent() {
   const [error, setError] = useState('');
   const [showForm, setShowForm] = useState(false);
 
-  // Secret test mode - press 'T' key to bypass paywall
-  React.useEffect(() => {
-    const handleKeyPress = (e: KeyboardEvent) => {
-      if (e.key === 'T' || e.key === 't') {
-        markAsPaid();
-        setShowForm(true);
-        console.log('🔓 Test mode activated!');
-      }
-    };
-    window.addEventListener('keypress', handleKeyPress);
-    return () => window.removeEventListener('keypress', handleKeyPress);
-  }, [markAsPaid]);
+  // Test mode removed - paywall is live
 
   const handlePaymentComplete = () => {
     markAsPaid();
