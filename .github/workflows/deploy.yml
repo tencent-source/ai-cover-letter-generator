@@ -34,8 +34,7 @@ jobs:
         run: |
           npm run build
         env:
-          VITE_GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
-          VITE_PAYMENT_URL: ${{ secrets.LEMON_SQUEEZY_CHECKOUT_URL }}
+          VITE_OPENROUTER_API_KEY: ${{ secrets.VITE_OPENROUTER_API_KEY }}
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
