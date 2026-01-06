@@ -17,27 +17,28 @@ export function Input({
   return (
     <div className="w-full">
       {label && (
-        <label className="block text-sm font-medium text-slate-300 mb-1">
+        <label className="block text-sm font-semibold text-slate-900 mb-2">
           {label}
         </label>
       )}
       <input
         className={cn(
-          'w-full px-4 py-2 border rounded-lg transition-colors duration-200 bg-slate-800',
-          'focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent',
-          'placeholder:text-slate-500 text-white',
+          'w-full px-4 py-3 border rounded-xl transition-all duration-200 bg-white',
+          'focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500',
+          'placeholder:text-slate-400 text-slate-900',
+          'hover:border-slate-400',
           error
-            ? 'border-red-500 focus:ring-red-500'
-            : 'border-slate-600 hover:border-slate-500',
+            ? 'border-red-400 focus:ring-red-400'
+            : 'border-slate-300',
           className
         )}
         {...props}
       />
       {error && (
-        <p className="mt-1 text-sm text-red-400">{error}</p>
+        <p className="mt-2 text-sm text-red-600">{error}</p>
       )}
       {helperText && !error && (
-        <p className="mt-1 text-sm text-slate-400">{helperText}</p>
+        <p className="mt-2 text-sm text-slate-500">{helperText}</p>
       )}
     </div>
   );
@@ -59,27 +60,28 @@ export function Textarea({
   return (
     <div className="w-full">
       {label && (
-        <label className="block text-sm font-medium text-slate-300 mb-1">
+        <label className="block text-sm font-semibold text-slate-900 mb-2">
           {label}
         </label>
       )}
       <textarea
         className={cn(
-          'w-full px-4 py-2 border rounded-lg transition-colors duration-200 bg-slate-800',
-          'focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent',
-          'placeholder:text-slate-500 resize-none text-white',
+          'w-full px-4 py-3 border rounded-xl transition-all duration-200 bg-white',
+          'focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500',
+          'placeholder:text-slate-400 resize-none text-slate-900',
+          'hover:border-slate-400',
           error
-            ? 'border-red-500 focus:ring-red-500'
-            : 'border-slate-600 hover:border-slate-500',
+            ? 'border-red-400 focus:ring-red-400'
+            : 'border-slate-300',
           className
         )}
         {...props}
       />
       {error && (
-        <p className="mt-1 text-sm text-red-400">{error}</p>
+        <p className="mt-2 text-sm text-red-600">{error}</p>
       )}
       {helperText && !error && (
-        <p className="mt-1 text-sm text-slate-400">{helperText}</p>
+        <p className="mt-2 text-sm text-slate-500">{helperText}</p>
       )}
     </div>
   );

@@ -54,24 +54,24 @@ export function PaymentModal({ isOpen, onClose, onPaymentComplete }: PaymentModa
     <Modal isOpen={isOpen} onClose={handleClose} title="Generate Cover Letter" size="md">
       {step === 'intro' && (
         <div className="text-center">
-          <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <CreditCard className="w-8 h-8 text-primary-600" />
+          <div className="w-20 h-20 bg-gradient-to-br from-emerald-100 to-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
+            <CreditCard className="w-10 h-10 text-emerald-600" />
           </div>
           
-          <h3 className="text-xl font-semibold text-gray-900 mb-2">
-            One-Time Payment Required
+          <h3 className="text-2xl font-bold text-slate-900 mb-3">
+            One-Time Payment
           </h3>
           
-          <p className="text-gray-600 mb-6">
-            Generate a personalized, professional cover letter powered by AI for just{' '}
-            <span className="font-semibold text-primary-600">
+          <p className="text-slate-600 mb-6 text-lg">
+            Generate a personalized, professional cover letter for just{' '}
+            <span className="font-bold text-emerald-600">
               {formatCurrency(PAYMENT_CONFIG.price)}
             </span>
           </p>
           
-          <div className="bg-gray-50 rounded-lg p-4 mb-6">
-            <h4 className="font-medium text-gray-900 mb-2">What's included:</h4>
-            <ul className="text-sm text-gray-600 space-y-1">
+          <div className="bg-slate-50 rounded-xl p-5 mb-6 border border-slate-200">
+            <h4 className="font-semibold text-slate-900 mb-3">What you get:</h4>
+            <ul className="text-sm text-slate-600 space-y-2">
               <li className="flex items-center gap-2">
                 <CheckCircle className="w-4 h-4 text-green-500" />
                 Personalized cover letter
@@ -105,15 +105,15 @@ export function PaymentModal({ isOpen, onClose, onPaymentComplete }: PaymentModa
 
       {step === 'verifying' && (
         <div className="text-center">
-          <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <CreditCard className="w-8 h-8 text-yellow-600" />
+          <div className="w-20 h-20 bg-gradient-to-br from-yellow-100 to-orange-100 rounded-full flex items-center justify-center mx-auto mb-6">
+            <CreditCard className="w-10 h-10 text-orange-600" />
           </div>
           
-          <h3 className="text-xl font-semibold text-gray-900 mb-2">
+          <h3 className="text-2xl font-bold text-slate-900 mb-3">
             Verify Your Payment
           </h3>
           
-          <p className="text-gray-600 mb-4">
+          <p className="text-slate-600 mb-4 text-lg">
             After completing your payment, enter the transaction ID from your email receipt to unlock your cover letter.
           </p>
           
@@ -122,7 +122,7 @@ export function PaymentModal({ isOpen, onClose, onPaymentComplete }: PaymentModa
             value={transactionId}
             onChange={(e) => setTransactionId(e.target.value)}
             placeholder="Enter transaction ID"
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg mb-3 focus:outline-none focus:ring-2 focus:ring-primary-500"
+            className="w-full px-4 py-3 border border-slate-300 rounded-xl mb-3 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-slate-900"
           />
           
           {error && (
@@ -146,15 +146,15 @@ export function PaymentModal({ isOpen, onClose, onPaymentComplete }: PaymentModa
 
       {step === 'complete' && (
         <div className="text-center">
-          <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <CheckCircle className="w-8 h-8 text-green-600" />
+          <div className="w-20 h-20 bg-gradient-to-br from-green-100 to-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6">
+            <CheckCircle className="w-10 h-10 text-emerald-600" />
           </div>
           
-          <h3 className="text-xl font-semibold text-gray-900 mb-2">
+          <h3 className="text-2xl font-bold text-slate-900 mb-3">
             Payment Verified!
           </h3>
           
-          <p className="text-gray-600 mb-6">
+          <p className="text-slate-600 mb-6 text-lg">
             Your payment has been verified. You can now generate your cover letter.
           </p>
           

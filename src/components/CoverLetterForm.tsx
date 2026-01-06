@@ -113,13 +113,15 @@ export function CoverLetterForm({ onGenerate, onError }: CoverLetterFormProps) {
   };
 
   return (
-    <Card hover>
-      <CardHeader>
-        <CardTitle>Generate Your Cover Letter</CardTitle>
-      </CardHeader>
+    <div className="bg-white rounded-2xl shadow-xl border border-slate-200 p-8">
+      <div className="mb-8">
+        <h2 className="text-3xl font-bold text-slate-900 mb-2">Create your cover letter</h2>
+        <p className="text-lg text-slate-600">
+          Fill in the details below and we'll generate a personalized cover letter in seconds
+        </p>
+      </div>
       
-      <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-5">
+      <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Input
               label="Your Name"
@@ -211,7 +213,6 @@ export function CoverLetterForm({ onGenerate, onError }: CoverLetterFormProps) {
             )}
           </Button>
         </form>
-      </CardContent>
-    </Card>
+    </div>
   );
 }

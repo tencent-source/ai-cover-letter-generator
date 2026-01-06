@@ -48,46 +48,62 @@ function AppContent() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-900">
+    <div className="min-h-screen bg-white">
       <Header />
 
-      <main className="max-w-4xl mx-auto px-4 py-8">
-        {/* Show payment modal if user hasn't paid */}
+      <main className="mx-auto px-4">
+        {/* Hero section - Grammarly inspired */}
         {!isPaid && !showForm && !coverLetter && (
-          <div className="text-center py-16">
-            <div className="w-20 h-20 bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-6">
-              <Lock className="w-10 h-10 text-slate-400" />
+          <div className="relative overflow-hidden">
+            {/* Gradient background */}
+            <div className="absolute inset-0 bg-gradient-to-br from-emerald-50 via-white to-blue-50 opacity-60"></div>
+            
+            <div className="relative max-w-5xl mx-auto py-20 md:py-32 text-center">
+              <h1 className="text-5xl md:text-7xl font-bold text-slate-900 mb-6 leading-tight">
+                Land your dream job with a{' '}
+                <span className="bg-gradient-to-r from-emerald-600 to-blue-600 text-transparent bg-clip-text">
+                  perfect cover letter
+                </span>
+              </h1>
+              
+              <p className="text-xl md:text-2xl text-slate-600 mb-10 max-w-3xl mx-auto leading-relaxed">
+                Create a personalized, professional cover letter in seconds. 
+                No templates, no hassle—just results.
+              </p>
+
+              <Button 
+                size="lg" 
+                onClick={() => setShowPaymentModal(true)}
+                className="text-lg px-12 py-6 bg-gradient-to-r from-emerald-600 to-blue-600 hover:from-emerald-700 hover:to-blue-700 shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-200 text-white"
+              >
+                Get Started for $9.99
+              </Button>
+              
+              <p className="text-slate-500 mt-6 text-sm">
+                ✓ One-time payment • ✓ Instant access • ✓ No subscription
+              </p>
             </div>
-
-            <h2 className="text-2xl font-bold text-white mb-2">
-              Generate Professional Cover Letters
-            </h2>
-
-            <p className="text-slate-400 mb-6 max-w-md mx-auto">
-              Create personalized, compelling cover letters tailored to any job application.
-              One-time payment of {AI_CONFIG.apiKey ? 'just $4.99' : 'required'}.
-            </p>
-
-            <Button size="lg" onClick={() => setShowPaymentModal(true)}>
-              Get Started - $4.99
-            </Button>
           </div>
         )}
 
         {/* Show form if user has paid and no cover letter yet */}
         {isPaid && showForm && !coverLetter && (
-          <CoverLetterForm
-            onGenerate={handleGenerate}
-            onError={handleError}
-          />
+          <div className="max-w-4xl mx-auto py-8">
+            <CoverLetterForm
+              onGenerate={handleGenerate}
+              onError={handleError}
+            />
+          </div>
         )}
 
         {/* Show cover letter if generated */}
         {coverLetter && (
-          <CoverLetterDisplay
-            coverLetter={coverLetter}
-            onRegenerate={handleRegenerate}
-          />
+          <div className="max-w-4xl mx-auto py-8">
+            <CoverLetterDisplay
+              coverLetter={coverLetter}
+              onRegenerate={handleRegenerate}
+            />
+          </div>
         )}
 
         {/* Error message */}
@@ -110,8 +126,8 @@ function AppContent() {
         )}
       </main>
 
-      <footer className="bg-slate-800 border-t border-slate-700 mt-auto">
-        <div className="max-w-4xl mx-auto px-4 py-6 text-center text-sm text-slate-400">
+      <footer className="bg-slate-50 border-t border-slate-200 mt-auto">
+        <div className="max-w-4xl mx-auto px-4 py-8 text-center text-sm text-slate-600">
           <p>Professional cover letters that land interviews • Fast & reliable</p>
         </div>
       </footer>
