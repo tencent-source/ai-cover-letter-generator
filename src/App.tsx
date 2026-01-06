@@ -7,6 +7,7 @@ import { PaymentModal } from './components/PaymentModal';
 import { Button } from './components/ui/Button';
 import { AppProvider, useApp } from './contexts/AppContext';
 import { AI_CONFIG } from './utils/constants';
+import { saveToHistory } from './utils/history';
 
 function AppContent() {
   const { isPaid, isLoading, markAsPaid, verifyPayment } = useApp();
@@ -41,7 +42,6 @@ function AppContent() {
     
     // Save to history
     if (jobTitle && companyName) {
-      const { saveToHistory } = require('@/utils/history');
       saveToHistory({ coverLetter: letter, jobTitle, companyName });
     }
   };
