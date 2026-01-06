@@ -1,10 +1,10 @@
 # AI Cover Letter Generator
 
-A modern, professional AI-powered cover letter generator web app. Generate personalized cover letters tailored to any job application using Groq's fast AI models.
+A modern, professional AI-powered cover letter generator web app. Generate personalized cover letters tailored to any job application using advanced AI technology.
 
 ## Features
 
-- 🤖 **AI-Powered**: Generate professional cover letters using Groq's Llama 4 model
+- 🤖 **AI-Powered**: Generate professional cover letters using advanced AI models
 - 💳 **Simple Payments**: One-time payment of $4.99 via Lemon Squeezy
 - 📝 **Personalized**: Tailored to your skills, experience, and the job description
 - 🔒 **Secure**: Safe payment processing through Lemon Squeezy
@@ -16,7 +16,7 @@ A modern, professional AI-powered cover letter generator web app. Generate perso
 - **React 19** with TypeScript
 - **Vite** for fast development and building
 - **Tailwind CSS** for styling
-- **Groq API** for AI generation
+- **AI Technology** for cover letter generation
 - **Lemon Squeezy** for payment processing
 - **GitHub Pages** for hosting
 
@@ -26,7 +26,7 @@ A modern, professional AI-powered cover letter generator web app. Generate perso
 
 - Node.js 18+ 
 - npm or yarn
-- A Groq API key (get one at https://console.groq.com)
+- An AI API key (get one from your preferred provider)
 - A Lemon Squeezy account (https://lemonsqueezy.com)
 
 ### Installation
@@ -48,7 +48,7 @@ cp .env.example .env
 Create a `.env` file with:
 
 ```env
-VITE_GROQ_API_KEY=your-groq-api-key-here
+VITE_AI_API_KEY=your-ai-api-key-here
 VITE_PAYMENT_URL=your-lemon-squeezy-checkout-url
 ```
 
@@ -79,9 +79,9 @@ The built files will be in the `dist` folder.
 
 ## Configuration
 
-### Groq API
+### AI API
 
-Get your API key from: https://console.groq.com/keys
+Get your API key from your AI provider
 
 ### Lemon Squeezy Payment
 
@@ -102,7 +102,7 @@ src/
 ├── contexts/
 │   └── AppContext.tsx
 ├── services/
-│   └── groq.ts       # Groq API integration
+│   └── ai.ts         # AI API integration
 ├── utils/
 │   ├── constants.ts  # App configuration
 │   └── helpers.ts    # Utility functions
@@ -113,7 +113,7 @@ src/
 
 ## Security Notes
 
-- The Groq API key is currently stored in environment variables
+- The AI API key is currently stored in environment variables
 - For production use, consider using a serverless proxy (e.g., Cloudflare Workers)
 - Payment verification is currently client-side; enhance with webhook verification for higher security
 

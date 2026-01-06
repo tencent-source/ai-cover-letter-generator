@@ -22,7 +22,7 @@ export function Header() {
 
           <div className="flex items-center gap-2 text-sm text-slate-400">
             <Sparkles className="w-4 h-4 text-slate-500" />
-            <span>Powered by Groq AI</span>
+            <span>Powered by Advanced AI</span>
           </div>
         </div>
       </div>

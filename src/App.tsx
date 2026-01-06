@@ -112,7 +112,7 @@ function AppContent() {
 
       <footer className="bg-slate-800 border-t border-slate-700 mt-auto">
         <div className="max-w-4xl mx-auto px-4 py-6 text-center text-sm text-slate-400">
-          <p>Powered by Groq AI • Fast, intelligent cover letter generation</p>
+          <p>Powered by Advanced AI • Fast, intelligent cover letter generation</p>
         </div>
       </footer>
     </div>
