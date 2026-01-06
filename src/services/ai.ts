@@ -71,6 +71,8 @@ Contact Information:
 
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
+    'HTTP-Referer': 'https://yourapp.com',
+    'X-Title': 'Cover Letter Generator',
   };
 
   if (apiKey) {
