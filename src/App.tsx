@@ -6,7 +6,7 @@ import { CoverLetterDisplay } from './components/CoverLetterDisplay';
 import { PaymentModal } from './components/PaymentModal';
 import { Button } from './components/ui/Button';
 import { AppProvider, useApp } from './contexts/AppContext';
-import { GROQ_CONFIG } from './utils/constants';
+import { AI_CONFIG } from './utils/constants';
 
 function AppContent() {
   const { isPaid, isLoading, markAsPaid, verifyPayment } = useApp();
@@ -65,7 +65,7 @@ function AppContent() {
 
             <p className="text-slate-400 mb-6 max-w-md mx-auto">
               Create personalized, compelling cover letters tailored to any job application.
-              One-time payment of {GROQ_CONFIG.apiKey ? 'just $4.99' : 'required'}.
+              One-time payment of {AI_CONFIG.apiKey ? 'just $4.99' : 'required'}.
             </p>
 
             <Button size="lg" onClick={() => setShowPaymentModal(true)}>

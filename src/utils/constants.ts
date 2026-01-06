@@ -5,15 +5,14 @@ export const APP_CONFIG = {
   version: '1.0.0',
 };
 
-// GROQ API Configuration
-// Get your API key from: https://console.groq.com/keys
+// AI API Configuration
 // IMPORTANT: Never commit your API key to version control!
 // Use environment variables or a proxy service for security
-export const GROQ_CONFIG = {
+export const AI_CONFIG = {
   apiEndpoint: 'https://api.groq.com/openai/v1/chat/completions',
-  // API key should be set via VITE_GROQ_API_KEY environment variable
-  // For local development, create a .env file with VITE_GROQ_API_KEY=your-key
-  apiKey: import.meta.env.VITE_GROQ_API_KEY || '',
+  // API key should be set via VITE_AI_API_KEY environment variable
+  // For local development, create a .env file with VITE_AI_API_KEY=your-key
+  apiKey: import.meta.env.VITE_AI_API_KEY || import.meta.env.VITE_GROQ_API_KEY || '',
   model: 'llama-4-scout-17b-16e-instruct',
   maxTokens: 1000,
   temperature: 0.7,

@@ -3,8 +3,8 @@ import { Send, Loader2 } from 'lucide-react';
 import { Button } from './ui/Button';
 import { Input, Textarea } from './ui/Input';
 import { Card, CardHeader, CardTitle, CardContent } from './ui/Card';
-import { generateCoverLetter } from '@/services/groq';
-import { GROQ_CONFIG } from '@/utils/constants';
+import { generateCoverLetter } from '@/services/ai';
+import { AI_CONFIG } from '@/utils/constants';
 import { isValidEmail } from '@/utils/helpers';
 
 interface CoverLetterFormData {
@@ -96,7 +96,7 @@ export function CoverLetterForm({ onGenerate, onError }: CoverLetterFormProps) {
           skills: skillsArray,
         },
         undefined,
-        GROQ_CONFIG.apiKey || undefined
+        AI_CONFIG.apiKey || undefined
       );
       
       if (result.error) {

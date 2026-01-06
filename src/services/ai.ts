@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { GROQ_CONFIG } from '../utils/constants';
+import { AI_CONFIG } from '../utils/constants';
 
 export interface CoverLetterRequest {
   jobTitle: string;
@@ -57,16 +57,16 @@ Contact Information:
 - Name: ${request.name}
 - Email: ${request.contactEmail}`;
 
-  const endpoint = apiEndpoint || GROQ_CONFIG.apiEndpoint;
+  const endpoint = apiEndpoint || AI_CONFIG.apiEndpoint;
   
   const payload = {
-    model: GROQ_CONFIG.model,
+    model: AI_CONFIG.model,
     messages: [
       { role: 'system', content: SYSTEM_PROMPT },
       { role: 'user', content: userPrompt }
     ],
-    temperature: GROQ_CONFIG.temperature,
-    max_tokens: GROQ_CONFIG.maxTokens,
+    temperature: AI_CONFIG.temperature,
+    max_tokens: AI_CONFIG.maxTokens,
   };
 
   const headers: Record<string, string> = {
