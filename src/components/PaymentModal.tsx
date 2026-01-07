@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { CreditCard, CheckCircle, ExternalLink } from 'lucide-react';
+import { PayPalScriptProvider, PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js';
+import { CheckCircle, CreditCard, Loader2 } from 'lucide-react';
 import { Button } from './ui/Button';
 import { Card, CardHeader, CardTitle, CardContent } from './ui/Card';
 import { Modal } from './ui/Modal';
@@ -13,41 +14,70 @@ interface PaymentModalProps {
 }
 
 export function PaymentModal({ isOpen, onClose, onPaymentComplete }: PaymentModalProps) {
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [step, setStep] = useState<'intro' | 'verifying' | 'complete'>('intro');
-  const [transactionId, setTransactionId] = useState('');
+  const [step, setStep] = useState<'intro' | 'processing' | 'complete'>('intro');
   const [error, setError] = useState('');
 
-  const handlePayment = () => {
-    setIsProcessing(true);
-    // Open Lemon Squeezy checkout in new tab
-    window.open(PAYMENT_CONFIG.checkoutUrl, '_blank');
-    
-    // Show verification step
-    setTimeout(() => {
-      setIsProcessing(false);
-      setStep('verifying');
-    }, 1500);
-  };
-
-  const handleVerify = () => {
-    if (!transactionId.trim()) {
-      setError('Please enter your transaction ID');
-      return;
-    }
-
-    setError('');
-    // In a real app, you would verify this with the payment processor
-    // For now, we accept any non-empty transaction ID
+  const handlePaymentSuccess = () => {
     setStep('complete');
     onPaymentComplete();
   };
 
   const handleClose = () => {
     setStep('intro');
-    setTransactionId('');
     setError('');
     onClose();
+  };
+
+  const PayPalButtonsWrapper = () => {
+    const [{ isPending }] = usePayPalScriptReducer();
+
+    if (isPending) {
+      return (
+        <div className="flex justify-center py-8">
+          <Loader2 className="w-8 h-8 animate-spin text-emerald-600" />
+        </div>
+      );
+    }
+
+    return (
+      <div className="paypal-button-container">
+        <PayPalButtons
+          style={{
+            layout: 'vertical',
+            color: 'gold',
+            shape: 'rect',
+            label: 'paypal',
+          }}
+          createOrder={(data, actions) => {
+            return actions.order.create({
+              intent: 'CAPTURE',
+              purchase_units: [
+                {
+                  description: 'AI Cover Letter Generator - One-Time Payment',
+                  amount: {
+                    currency_code: PAYMENT_CONFIG.currency,
+                    value: PAYMENT_CONFIG.price.toFixed(2),
+                  },
+                },
+              ],
+            });
+          }}
+          onApprove={async (data, actions) => {
+            if (actions.order) {
+              const order = await actions.order.capture();
+              handlePaymentSuccess();
+            }
+          }}
+          onError={(err) => {
+            setError('Payment failed. Please try again.');
+            console.error('PayPal error:', err);
+          }}
+          onCancel={() => {
+            setError('Payment cancelled. Please try again.');
+          }}
+        />
+      </div>
+    );
   };
 
   return (
@@ -57,18 +87,18 @@ export function PaymentModal({ isOpen, onClose, onPaymentComplete }: PaymentModa
           <div className="w-20 h-20 bg-gradient-to-br from-emerald-100 to-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
             <CreditCard className="w-10 h-10 text-emerald-600" />
           </div>
-          
+
           <h3 className="text-2xl font-bold text-slate-900 mb-3">
             One-Time Payment
           </h3>
-          
+
           <p className="text-slate-600 mb-6 text-lg">
             Generate a personalized, professional cover letter for just{' '}
             <span className="font-bold text-emerald-600">
               {formatCurrency(PAYMENT_CONFIG.price)}
             </span>
           </p>
-          
+
           <div className="bg-slate-50 rounded-xl p-5 mb-6 border border-slate-200">
             <h4 className="font-semibold text-slate-900 mb-3">What you get:</h4>
             <ul className="text-sm text-slate-600 space-y-2">
@@ -86,61 +116,43 @@ export function PaymentModal({ isOpen, onClose, onPaymentComplete }: PaymentModa
               </li>
             </ul>
           </div>
-          
-          <div className="flex gap-3">
+
+          <PayPalScriptProvider
+            options={{
+              clientId: import.meta.env.VITE_PAYPAL_CLIENT_ID || 'test',
+              currency: PAYMENT_CONFIG.currency,
+            }}
+          >
+            <PayPalButtonsWrapper />
+          </PayPalScriptProvider>
+
+          {error && (
+            <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg">
+              <p className="text-sm text-red-600">{error}</p>
+            </div>
+          )}
+
+          <div className="mt-6 flex gap-3">
             <Button variant="outline" onClick={handleClose} className="flex-1">
               Cancel
-            </Button>
-            <Button 
-              onClick={handlePayment} 
-              loading={isProcessing}
-              className="flex-1"
-            >
-              Pay {formatCurrency(PAYMENT_CONFIG.price)}
-              <ExternalLink className="w-4 h-4 ml-2" />
             </Button>
           </div>
         </div>
       )}
 
-      {step === 'verifying' && (
+      {step === 'processing' && (
         <div className="text-center">
           <div className="w-20 h-20 bg-gradient-to-br from-yellow-100 to-orange-100 rounded-full flex items-center justify-center mx-auto mb-6">
-            <CreditCard className="w-10 h-10 text-orange-600" />
+            <Loader2 className="w-10 h-10 animate-spin text-orange-600" />
           </div>
-          
+
           <h3 className="text-2xl font-bold text-slate-900 mb-3">
-            Verify Your Payment
+            Processing Payment
           </h3>
-          
-          <p className="text-slate-600 mb-4 text-lg">
-            After completing your payment, enter the transaction ID from your email receipt to unlock your cover letter.
+
+          <p className="text-slate-600 mb-6 text-lg">
+            Please complete your payment in popup window...
           </p>
-          
-          <input
-            type="text"
-            value={transactionId}
-            onChange={(e) => setTransactionId(e.target.value)}
-            placeholder="Enter transaction ID"
-            className="w-full px-4 py-3 border border-slate-300 rounded-xl mb-3 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-slate-900"
-          />
-          
-          {error && (
-            <p className="text-red-500 text-sm mb-3">{error}</p>
-          )}
-          
-          <p className="text-xs text-gray-500 mb-4">
-            Transaction ID can be found in your Lemon Squeezy receipt email
-          </p>
-          
-          <div className="flex gap-3">
-            <Button variant="outline" onClick={handleClose} className="flex-1">
-              Cancel
-            </Button>
-            <Button onClick={handleVerify} className="flex-1">
-              Verify & Generate
-            </Button>
-          </div>
         </div>
       )}
 
@@ -149,15 +161,15 @@ export function PaymentModal({ isOpen, onClose, onPaymentComplete }: PaymentModa
           <div className="w-20 h-20 bg-gradient-to-br from-green-100 to-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6">
             <CheckCircle className="w-10 h-10 text-emerald-600" />
           </div>
-          
+
           <h3 className="text-2xl font-bold text-slate-900 mb-3">
-            Payment Verified!
+            Payment Successful!
           </h3>
-          
+
           <p className="text-slate-600 mb-6 text-lg">
             Your payment has been verified. You can now generate your cover letter.
           </p>
-          
+
           <Button onClick={handleClose} className="w-full">
             Continue to Cover Letter
           </Button>
